@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Form</title>
+    <style>
+        /* Styling the form and confirmation message */
+        form {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 1em;
+            background: #f9f9f9;
+            border-radius: 5px;
+        }
+
+        label {
+            margin-top: 1em;
+            display: block;
+        }
+
+        input, textarea {
+            width: 100%;
+            padding: 0.5em;
+            margin-top: 0.5em;
+            margin-bottom: 1em;
+        }
+
+        button {
+            padding: 0.7em;
+            color: #fff;
+            background-color: #007BFF;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        #confirmation-message {
+            max-width: 600px;
+            margin: 1em auto;
+            padding: 1em;
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+            border-radius: 5px;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+    <form id="contact-form" method="POST">
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" required>
+
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required>
+
+        <label for="message">Message:</label>
+        <textarea id="message" name="message" required></textarea>
+
+        <button type="submit">Send</button>
+    </form>
+
+    <!-- ส่วนที่จะแสดงข้อความยืนยัน -->
+    <div id="confirmation-message">Your message has been sent successfully!</div>
+
+    <script>
+    document.getElementById('contact-form').addEventListener('submit', function(event) {
+        event.preventDefault(); // ป้องกันไม่ให้ฟอร์มรีเฟรชหน้าเว็บ
+
+        // รวบรวมข้อมูลจากฟอร์ม
+        const formData = new FormData(this);
+
+        // ส่งข้อมูลฟอร์มด้วย AJAX ไปยัง Getform
+        fetch('https://getform.io/f/aroooyxb', {  // ใช้ URL ของคุณจาก Getform
+            method: 'POST',
+            body: formData
+        })
+        .then(response => {
+            if (response.ok) {
+                // แสดงข้อความยืนยันเมื่อส่งฟอร์มสำเร็จ
+                document.getElementById('confirmation-message').style.display = 'block';
+                // ล้างข้อมูลในฟอร์มหลังจากส่งสำเร็จ
+                document.getElementById('contact-form').reset();
+            } else {
+                alert('Failed to send the message. Please try again.');
+            }
+        })
+        .catch(error => {
+            alert('There was an error submitting the form. Please try again later.');
+        });
+    });
+    </script>
+
+</body>
+  </html>
